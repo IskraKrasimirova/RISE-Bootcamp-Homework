@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./js/app.js" type="module"></script> 
+    <!-- <script src="./js/client1.js" type="module"></script>  -->
+    <!-- <script src="./server/index.js" type="module"></script> -->
+    <script>
+        const ws = new WebSocket('ws://localhost:5500/');
+
+        ws.addEventListener('open', async () => {
+            console.log('We are connected.');
+            let response = await fetch('./input1.json');
+            let data = await response.json();
+            ws.send(JSON.stringify(data));
+
+        });
+
+        ws.addEventListener('message', (message) => {
+            try {
+                const data = JSON.parse(message);
+                console.log(data);
+            } catch (err) {
+                console.log(`Something went wrong with the message: ${err.message}`);
+            }
+        });
+    </script>
+</body>
+
+</html>
